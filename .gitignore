@@ -1,0 +1,11 @@
+node_modules/
+out/
+dist/
+.env
+.DS_Store
+*.log
+# Clips y música pesados: no se versionan (dejar solo los .gitkeep)
+public/clips/*
+!public/clips/.gitkeep
+public/music/*
+!public/music/.gitkeep

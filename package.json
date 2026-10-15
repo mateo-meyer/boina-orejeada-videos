@@ -1,0 +1,36 @@
+{
+  "name": "boina-orejeada-videos",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Edición automática de videos de Boina Orejeada con Remotion",
+  "type": "module",
+  "scripts": {
+    "dev": "remotion studio",
+    "studio": "remotion studio",
+    "render": "node scripts/render.mjs",
+    "render:demo": "remotion render ReelPromo out/reel-promo.mp4",
+    "still": "remotion still ReelPromo out/thumbnail.png --frame=30",
+    "lint": "tsc --noEmit",
+    "upgrade": "remotion upgrade"
+  },
+  "dependencies": {
+    "@remotion/bundler": "4.0.535",
+    "@remotion/cli": "4.0.535",
+    "@remotion/fonts": "4.0.535",
+    "@remotion/media-parser": "4.0.535",
+    "@remotion/media-utils": "4.0.535",
+    "@remotion/renderer": "4.0.535",
+    "@remotion/transitions": "4.0.535",
+    "@remotion/zod-types": "4.0.535",
+    "react": "^19.3.1",
+    "react-dom": "^19.3.1",
+    "remotion": "4.0.535",
+    "zod": "4.5.4"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.5",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "typescript": "^7.0.2"
+  }
+}

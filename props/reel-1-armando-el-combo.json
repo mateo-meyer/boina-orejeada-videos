@@ -1,0 +1,109 @@
+{
+  "textoFinal": "Boina Orejeada",
+  "duracionCierre": 1.5,
+  "segmentos": [
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4287.mp4", "inicio": 5.8, "duracion": 1.4, "cx": 0.2, "cxFin": 0.36,
+      "textos": [
+        { "desde": 0, "hasta": 0.6, "lugar": "centro", "parpadeo": true, "partes": [{ "texto": "che" }] },
+        { "desde": 0.6, "hasta": 1.4, "lugar": "centro", "tamano": 104, "partes": [{ "texto": "tengo una", "peso": "fina" }, { "texto": "semana." }] }
+      ]
+    },
+    {
+      "tipo": "placa", "fondo": "crema", "duracion": 0.55,
+      "textos": [{ "desde": 0, "hasta": 0.55, "lugar": "centro", "partes": [{ "texto": "bueno" }] }]
+    },
+    {
+      "tipo": "placa", "fondo": "azul", "duracion": 0.65,
+      "textos": [{ "desde": 0, "hasta": 0.65, "lugar": "centro", "tamano": 170, "partes": [{ "texto": "EMPIEZO" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 9.0, "duracion": 1.2, "cx": 0.52, "notaAMano": "listo",
+      "textos": [
+        { "desde": 0, "hasta": 0.6, "lugar": "flanco", "partes": [{ "texto": "tengo", "peso": "fina" }, { "texto": "la tela" }] },
+        { "desde": 0.6, "hasta": 1.2, "lugar": "flanco", "partes": [{ "texto": "tengo", "peso": "fina" }, { "texto": "el molde." }] }
+      ]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 20.3, "duracion": 0.7, "cx": 0.52, "cy": 0.55, "punchIn": true,
+      "textos": [{ "desde": 0, "hasta": 0.7, "lugar": "arriba", "tamano": 170, "partes": [{ "texto": "PARÁ" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 13.0, "duracion": 0.9, "cx": 0.52,
+      "textos": [{ "desde": 0, "hasta": 0.9, "lugar": "flanco", "partes": [{ "texto": "los colores", "peso": "fina" }, { "texto": "después." }] }]
+    },
+    { "tipo": "marco", "archivo": "clips/reel1/IMG_4285.mp4", "inicio": 3.0, "duracion": 0.4, "cx": 0.42 },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4285.mp4", "inicio": 3.4, "duracion": 0.7, "cx": 0.42,
+      "textos": [{ "desde": 0, "hasta": 0.7, "lugar": "abajo", "partes": [{ "texto": "tengo", "peso": "fina" }, { "texto": "los", "peso": "fina" }, { "texto": "bocetos" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4283.mp4", "inicio": 4.25, "duracion": 0.6, "cx": 0.5,
+      "textos": [{ "desde": 0, "hasta": 0.6, "lugar": "abajo", "partes": [{ "texto": "tengo", "peso": "fina" }, { "texto": "los", "peso": "fina" }, { "texto": "bocetos" }] }]
+    },
+    {
+      "tipo": "placa", "fondo": "azul", "duracion": 0.9,
+      "textos": [
+        { "desde": 0, "hasta": 0.4, "lugar": "centro", "tamano": 220, "partes": [{ "texto": "2" }] },
+        { "desde": 0.4, "hasta": 0.9, "lugar": "centro", "partes": [{ "texto": "¿modelos?" }] }
+      ]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 58.0, "duracion": 1.2, "cx": 0.52,
+      "textos": [
+        { "desde": 0, "hasta": 0.4, "lugar": "centro", "tamano": 120, "partes": [{ "texto": "¿1 solo?" }] },
+        { "desde": 0.4, "hasta": 0.75, "lugar": "centro", "tamano": 120, "partes": [{ "texto": "necesito", "peso": "fina" }] },
+        { "desde": 0.75, "hasta": 1.2, "lugar": "centro", "tamano": 120, "partes": [{ "texto": "opinión." }] }
+      ]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 76.9, "duracion": 0.7, "cx": 0.5, "cy": 0.6, "punchIn": true,
+      "textos": [{ "desde": 0, "hasta": 0.7, "lugar": "arriba", "tamano": 170, "partes": [{ "texto": "PARÁ" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4290.mp4", "inicio": 3.5, "duracion": 1.8, "cx": 0.55, "cxFin": 0.5,
+      "textos": [
+        { "desde": 0, "hasta": 0.9, "lugar": "abajo", "partes": [{ "texto": "primero", "peso": "fina" }, { "texto": "lo", "peso": "fina" }, { "texto": "importante" }] },
+        { "desde": 0.9, "hasta": 1.8, "lugar": "centro", "tamano": 120, "partes": [{ "texto": "van", "peso": "fina" }, { "texto": "dos." }] }
+      ]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4289.mp4", "inicio": 3.4, "duracion": 1.2, "cx": 0.46, "cxFin": 0.5,
+      "textos": [{ "desde": 0, "hasta": 1.2, "lugar": "centro", "tamano": 120, "y": 0.36, "partes": [{ "texto": "¿qué sigue?" }] }]
+    },
+    {
+      "tipo": "placa", "fondo": "azul", "duracion": 0.6,
+      "textos": [{ "desde": 0, "hasta": 0.6, "lugar": "centro", "partes": [{ "texto": "colores" }] }]
+    },
+    {
+      "tipo": "placa", "fondo": "crema", "duracion": 0.6,
+      "textos": [{ "desde": 0, "hasta": 0.6, "lugar": "centro", "tamano": 120, "partes": [{ "texto": "quiero uno solo" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 77.9, "duracion": 1.8, "cx": 0.5,
+      "textos": [
+        { "desde": 0, "hasta": 0.85, "lugar": "flanco", "partes": [{ "texto": "voy a lo", "peso": "fina" }, { "texto": "seguro" }] },
+        { "desde": 0.85, "hasta": 1.8, "lugar": "flanco", "partes": [{ "texto": "NO," }, { "texto": "mejor no.", "peso": "fina" }] }
+      ]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4284.mp4", "inicio": 5.0, "duracion": 0.5, "cx": 0.42,
+      "textos": [{ "desde": 0, "hasta": 0.5, "lugar": "abajo", "tamano": 110, "partes": [{ "texto": "me la juego." }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 31.4, "duracion": 0.9, "cx": 0.45,
+      "textos": [{ "desde": 0, "hasta": 0.9, "lugar": "abajo", "partes": [{ "texto": "creo que", "peso": "fina" }, { "texto": "decidimos" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4284.mp4", "inicio": 6.6, "duracion": 0.9, "cx": 0.5,
+      "textos": [{ "desde": 0, "hasta": 0.9, "lugar": "abajo", "partes": [{ "texto": "va", "peso": "fina" }, { "texto": "esta" }] }]
+    },
+    {
+      "tipo": "video", "archivo": "clips/reel1/IMG_4288.mp4", "inicio": 119.3, "duracion": 2.8, "cx": 0.48,
+      "textos": [
+        { "desde": 0, "hasta": 1.5, "lugar": "abajo", "partes": [{ "texto": "creo que", "peso": "fina" }, { "texto": "está listo." }] },
+        { "desde": 1.5, "hasta": 2.8, "lugar": "abajo", "tamano": 110, "partes": [{ "texto": "¿qué dicen?" }] }
+      ]
+    }
+  ]
+}

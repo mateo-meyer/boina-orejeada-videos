@@ -5,6 +5,11 @@ import {
   calculateClipEditMetadata,
   clipEditSchema,
 } from "./compositions/ClipEdit";
+import {
+  ReelDialogo,
+  calculateReelDialogoMetadata,
+  reelDialogoSchema,
+} from "./compositions/ReelDialogo";
 
 const FPS = 30;
 
@@ -44,6 +49,19 @@ export const RemotionRoot: React.FC = () => {
           duracionTransicion: 0.4,
           textoFinal: "Boina Orejeada",
         }}
+      />
+
+      {/* Reel de diálogo con uno mismo (Reel 1): placas, textos que flanquean, punch-in. Sin audio. */}
+      <Composition
+        id="ReelDialogo"
+        component={ReelDialogo}
+        schema={reelDialogoSchema}
+        fps={FPS}
+        width={1080}
+        height={1920}
+        durationInFrames={FPS * 10}
+        calculateMetadata={calculateReelDialogoMetadata}
+        defaultProps={{ segmentos: [], textoFinal: "Boina Orejeada", duracionCierre: 1.5 }}
       />
     </>
   );

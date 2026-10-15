@@ -1,6 +1,6 @@
 # Skillz
 
-32 skills de terceros para mejorar la edición de video. No se editan aquí: se actualizan desde sus repositorios.
+`editor-video` es la skill principal de este proyecto (propia, se edita aquí). Las otras 32 son de terceros que la complementan: no se editan aquí, se actualizan desde sus repositorios.
 
 | Grupo | Skills | Origen (commit instalado) |
 |---|---|---|
@@ -12,7 +12,7 @@
 | Edición completa | video-use | github.com/browser-use/video-use (`43cfc56`, MIT) |
 
 Cambios hechos al instalar:
-- cut-video y video-use llevan `disable-model-invocation: true`: no se activan solas. Se usan escribiendo /cut-video o /video-use.
+- cut-video y video-use llevan `disable-model-invocation: true`: no se activan solas (competirían con editor-video). Se usan escribiendo /cut-video o /video-use.
 - Se borraron vídeos, imágenes y demos que no usan las skills (banner, poster.html y tests de video-use).
 
 Avisos:

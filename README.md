@@ -52,8 +52,8 @@ la marca. La duración total se calcula sola a partir de los clips.
 ```json
 {
   "clips": [
-    { "archivo": "clips/toma1.mp4", "inicio": 0, "fin": 3, "texto": "Hechas a mano en Argentina" },
-    { "archivo": "clips/toma3.mp4", "texto": "Envíos a todo el país" }
+    { "archivo": "clips/toma1.mp4", "inicio": 0, "fin": 3, "texto": "Mates y accesorios materos" },
+    { "archivo": "clips/toma3.mp4", "texto": "Pedí por WhatsApp" }
   ],
   "musica": "music/fondo.mp3",
   "volumenMusica": 0.3,
@@ -63,6 +63,7 @@ la marca. La duración total se calcula sola a partir de los clips.
 ```
 
 - `inicio` / `fin`: recorte en segundos (si falta `fin`, usa el clip hasta el final).
+- `lineaFinal`: segunda línea del cierre (por defecto, el lema).
 - `texto`: zócalo opcional sobre el clip. `silenciar: true` quita el audio original.
 - `archivo` también acepta URLs `https://`.
 
@@ -78,14 +79,22 @@ npm run render -- ClipEdit props/ejemplo-clip-edit.json out/reel.mp4
 remotion.config.ts        Configuración de la CLI (h264, CRF 18, yuv420p)
 src/index.ts              Punto de entrada
 src/Root.tsx              Registro de composiciones
-src/brand.ts              Colores de la marca (ajustar a la paleta oficial)
-src/fonts.ts              Tipografías locales (public/fonts)
+src/brand.ts              Colores, lema y logos de la marca (Ficha de marca, oct-2026)
+src/fonts.ts              Tipografías de la marca (public/fonts)
+public/logo/              Logos: original, transparente y sobre azul
 src/compositions/         Composiciones de video
 scripts/render.mjs        Render programático (para automatizar)
 props/                    Props de ejemplo en JSON
 public/clips, public/music  Material de entrada (no se versiona)
 out/                      Videos renderizados (no se versiona)
 ```
+
+## Skills para Claude
+
+En `.claude/skills/` están las skills de edición. La principal es
+**`editor-video`**: arma y renderiza videos con este proyecto respetando la
+ficha de marca (`.claude/skills/editor-video/references/ficha-de-marca.md`).
+Las demás son de terceros y la complementan (ver `.claude/skills/LEEME.md`).
 
 ## Licencia de Remotion
 

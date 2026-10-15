@@ -312,10 +312,10 @@
   },
   {
    "tipo": "video",
-   "archivo": "clips/reel1/IMG_4289.mp4",
-   "inicio": 6.0,
+   "archivo": "clips/reel1/IMG_4287.mp4",
+   "inicio": 8.2,
    "duracion": 0.7,
-   "cx": 0.5,
+   "cx": 0.55,
    "textos": [
     {
      "desde": 0,
@@ -375,20 +375,21 @@
   {
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4282.mp4",
-   "inicio": 4.5,
-   "duracion": 2.2,
+   "inicio": 8.4,
+   "duracion": 2.5,
    "cx": 0.6,
    "textos": [
     {
      "desde": 0,
-     "hasta": 2.2,
+     "hasta": 2.5,
      "lugar": "abajo",
      "partes": [
       {
        "texto": "próximamente…"
       }
      ],
-     "tamano": 110
+     "tamano": 110,
+     "x": 0.25
     }
    ]
   }

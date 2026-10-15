@@ -2,6 +2,7 @@ import { Fragment } from "react";
 import {
   AbsoluteFill,
   Audio,
+  Img,
   CalculateMetadataFunction,
   OffthreadVideo,
   Sequence,
@@ -15,7 +16,7 @@ import { fade } from "@remotion/transitions/fade";
 import { parseMedia } from "@remotion/media-parser";
 import { z } from "zod";
 import { brand } from "../brand";
-import { fuenteTitulos } from "../fonts";
+import { fuenteSegundaLinea, fuenteTitulos } from "../fonts";
 
 const clipSchema = z.object({
   // Ruta relativa a public/, por ejemplo "clips/toma1.mp4", o una URL https://
@@ -34,6 +35,8 @@ export const clipEditSchema = z.object({
   volumenMusica: z.number().min(0).max(1),
   duracionTransicion: z.number().min(0),
   textoFinal: z.string(),
+  // Segunda línea del cierre. Si falta, se usa el lema de la marca.
+  lineaFinal: z.string().optional(),
 });
 
 type Props = z.infer<typeof clipEditSchema>;
@@ -96,9 +99,9 @@ const Zocalo: React.FC<{ texto: string }> = ({ texto }) => {
       <div
         style={{
           opacity,
-          backgroundColor: "rgba(0,0,0,0.55)",
-          color: brand.colors.light,
-          fontFamily: "sans-serif",
+          backgroundColor: "rgba(28,26,23,0.6)", // negro carbón
+          color: brand.colors.claro,
+          fontFamily: fuenteTitulos,
           fontWeight: 700,
           fontSize: 58,
           padding: "18px 36px",
@@ -115,7 +118,8 @@ const Zocalo: React.FC<{ texto: string }> = ({ texto }) => {
 
 export const ClipEdit: React.FC<Props> = (props) => {
   const { fps, durationInFrames } = useVideoConfig();
-  const { clips, musica, volumenMusica, duracionTransicion, textoFinal } = props;
+  const { clips, musica, volumenMusica, duracionTransicion, textoFinal, lineaFinal } =
+    props;
   const frames = clips.map((c) => framesDeClip(c, fps));
   const transicion = Math.round(duracionTransicion * fps);
   const cierre = CIERRE_SEGUNDOS * fps;
@@ -143,18 +147,38 @@ export const ClipEdit: React.FC<Props> = (props) => {
           </Fragment>
         ))}
         <TransitionSeries.Sequence durationInFrames={cierre}>
+          {/* Placa final: azul liso, logo dentro de su círculo claro, nombre y lema. */}
           <AbsoluteFill
             style={{
-              backgroundColor: brand.colors.primary,
+              backgroundColor: brand.colors.azul,
               justifyContent: "center",
               alignItems: "center",
-              color: brand.colors.light,
-              fontSize: 110,
-              fontWeight: 700,
-              fontFamily: fuenteTitulos,
+              gap: 24,
+              textAlign: "center",
             }}
           >
-            {textoFinal}
+            <Img src={staticFile(brand.logo.sobreAzul)} style={{ width: 640 }} />
+            <div
+              style={{
+                color: brand.colors.claro,
+                fontSize: 110,
+                fontWeight: 700,
+                lineHeight: 0.95,
+                fontFamily: fuenteTitulos,
+              }}
+            >
+              {textoFinal}
+            </div>
+            <div
+              style={{
+                color: brand.colors.cueroClaro,
+                fontSize: 64,
+                fontStyle: "italic",
+                fontFamily: fuenteSegundaLinea,
+              }}
+            >
+              {lineaFinal ?? brand.lema}
+            </div>
           </AbsoluteFill>
         </TransitionSeries.Sequence>
       </TransitionSeries>

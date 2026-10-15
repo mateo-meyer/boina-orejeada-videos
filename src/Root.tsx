@@ -22,7 +22,7 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         defaultProps={{
           titulo: "Boina Orejeada",
-          subtitulo: "Tradición criolla, hecha a mano",
+          subtitulo: "Tradición que nos representa",
           llamadoAccion: "Comprá en la tienda online",
         }}
       />

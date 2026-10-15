@@ -1,14 +1,16 @@
 import {
   AbsoluteFill,
+  Img,
   Sequence,
   interpolate,
   spring,
+  staticFile,
   useCurrentFrame,
   useVideoConfig,
 } from "remotion";
 import { z } from "zod";
 import { brand } from "../brand";
-import { fuenteTitulos as fontFamily } from "../fonts";
+import { fuenteSegundaLinea, fuenteTitulos } from "../fonts";
 
 export const reelPromoSchema = z.object({
   titulo: z.string(),
@@ -16,10 +18,11 @@ export const reelPromoSchema = z.object({
   llamadoAccion: z.string(),
 });
 
-const Entrada: React.FC<{ children: React.ReactNode; size: number }> = ({
-  children,
-  size,
-}) => {
+// Aparición suave desde abajo (sin rebote: estilo sobrio).
+const Entrada: React.FC<{
+  children: React.ReactNode;
+  style: React.CSSProperties;
+}> = ({ children, style }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const progress = spring({ frame, fps, config: { damping: 200 } });
@@ -28,14 +31,11 @@ const Entrada: React.FC<{ children: React.ReactNode; size: number }> = ({
   return (
     <div
       style={{
-        fontFamily,
-        fontSize: size,
-        fontWeight: 700,
-        color: brand.colors.text,
         textAlign: "center",
         padding: "0 80px",
         opacity: progress,
         transform: `translateY(${translateY}px)`,
+        ...style,
       }}
     >
       {children}
@@ -51,38 +51,61 @@ export const ReelPromo: React.FC<z.infer<typeof reelPromoSchema>> = ({
   const { fps } = useVideoConfig();
 
   return (
-    <AbsoluteFill style={{ backgroundColor: brand.colors.background }}>
+    <AbsoluteFill style={{ backgroundColor: brand.colors.claro }}>
       <AbsoluteFill
-        style={{ justifyContent: "center", alignItems: "center", gap: 40 }}
+        style={{ justifyContent: "center", alignItems: "center", gap: 36 }}
       >
         <Sequence layout="none">
-          <Entrada size={120}>{titulo}</Entrada>
+          <Entrada style={{}}>
+            <Img
+              src={staticFile(brand.logo.transparente)}
+              style={{ width: 300 }}
+            />
+          </Entrada>
         </Sequence>
-        <Sequence from={Math.round(fps * 0.8)} layout="none">
-          <Entrada size={60}>{subtitulo}</Entrada>
+        <Sequence from={Math.round(fps * 0.4)} layout="none">
+          <Entrada
+            style={{
+              fontFamily: fuenteTitulos,
+              fontWeight: 700,
+              fontSize: 120,
+              lineHeight: 0.95,
+              color: brand.colors.azul,
+            }}
+          >
+            {titulo}
+          </Entrada>
+        </Sequence>
+        <Sequence from={Math.round(fps * 1.2)} layout="none">
+          <Entrada
+            style={{
+              fontFamily: fuenteSegundaLinea,
+              fontStyle: "italic",
+              fontSize: 72,
+              color: brand.colors.cuero,
+            }}
+          >
+            {subtitulo}
+          </Entrada>
         </Sequence>
       </AbsoluteFill>
       <Sequence from={fps * 4}>
         <AbsoluteFill
-          style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 260 }}
+          style={{ justifyContent: "flex-end", alignItems: "center", paddingBottom: 380 }}
         >
-          <div
+          <Entrada
             style={{
-              backgroundColor: brand.colors.primary,
+              backgroundColor: brand.colors.azul,
               borderRadius: 24,
               padding: "28px 48px",
+              fontFamily: fuenteTitulos,
+              fontWeight: 700,
+              fontSize: 52,
+              color: brand.colors.claro,
             }}
           >
-            <span
-              style={{
-                fontFamily,
-                fontSize: 52,
-                color: brand.colors.light,
-              }}
-            >
-              {llamadoAccion}
-            </span>
-          </div>
+            {llamadoAccion}
+          </Entrada>
         </AbsoluteFill>
       </Sequence>
     </AbsoluteFill>

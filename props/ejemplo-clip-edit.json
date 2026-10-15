@@ -1,11 +1,12 @@
 {
   "clips": [
-    { "archivo": "clips/toma1.mp4", "inicio": 0, "fin": 3, "texto": "Hechas a mano en Argentina" },
-    { "archivo": "clips/toma2.mp4", "inicio": 1.5, "fin": 4.5, "texto": "Lana de oveja 100% natural" },
-    { "archivo": "clips/toma3.mp4", "texto": "Envíos a todo el país" }
+    { "archivo": "clips/toma1.mp4", "inicio": 0, "fin": 3, "texto": "Mates y accesorios materos" },
+    { "archivo": "clips/toma2.mp4", "inicio": 1.5, "fin": 4.5, "texto": "Combos para regalar" },
+    { "archivo": "clips/toma3.mp4", "texto": "Pedí por WhatsApp" }
   ],
   "musica": "music/fondo.mp3",
   "volumenMusica": 0.3,
   "duracionTransicion": 0.4,
-  "textoFinal": "Boina Orejeada"
+  "textoFinal": "Boina Orejeada",
+  "lineaFinal": "Tradición que nos representa"
 }

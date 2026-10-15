@@ -36,6 +36,8 @@ const textoSchema = z.object({
   parpadeo: z.boolean().optional(),
   // Alto del texto en "flanco"/"centro", en fracción del alto (0 = arriba).
   y: z.number().min(0).max(1).optional(),
+  // Centro horizontal del texto en fracción del ancho (por defecto, donde está la persona).
+  x: z.number().min(0).max(1).optional(),
   tamano: z.number().positive().optional(),
 });
 
@@ -62,6 +64,8 @@ const segmentoSchema = z.object({
 });
 
 export const reelDialogoSchema = z.object({
+  // "horizontal" = 1920×1080 sin recorte; "vertical" = 1080×1920 recortando cada plano.
+  formato: z.enum(["horizontal", "vertical"]),
   segmentos: z.array(segmentoSchema),
   textoFinal: z.string(),
   duracionCierre: z.number().positive(),
@@ -71,8 +75,11 @@ type Props = z.infer<typeof reelDialogoSchema>;
 type Segmento = z.infer<typeof segmentoSchema>;
 type Texto = z.infer<typeof textoSchema>;
 
-const ANCHO = 1080;
-const ALTO = 1920;
+// Escala de los textos: 1 cuando el lado corto del cuadro mide 1080.
+const useMedidas = () => {
+  const { width, height } = useVideoConfig();
+  return { ANCHO: width, ALTO: height, horizontal: width > height };
+};
 
 const framesDe = (s: number, fps: number) => Math.max(1, Math.round(s * fps));
 
@@ -83,13 +90,20 @@ export const calculateReelDialogoMetadata: CalculateMetadataFunction<Props> = ({
   const total =
     props.segmentos.reduce((a, s) => a + framesDe(s.duracion, fps), 0) +
     framesDe(props.duracionCierre, fps);
-  return { durationInFrames: total };
+  const horizontal = props.formato === "horizontal";
+  return {
+    durationInFrames: total,
+    width: horizontal ? 1920 : 1080,
+    height: horizontal ? 1080 : 1920,
+  };
 };
 
-// Los clips son 16:9; se recorta una ventana 9:16 que se puede mover en x.
-const VideoRecortado: React.FC<{ seg: Segmento; anchoClip?: number }> = ({ seg }) => {
+// Los clips son 16:9. En vertical se recorta una ventana 9:16 que se mueve en x;
+// en horizontal se ve el cuadro entero (cx/cy solo marcan el centro del zoom).
+const VideoRecortado: React.FC<{ seg: Segmento }> = ({ seg }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
+  const { ANCHO, ALTO } = useMedidas();
   const dur = framesDe(seg.duracion, fps);
   const cx = interpolate(frame, [0, dur - 1], [seg.cx ?? 0.5, seg.cxFin ?? seg.cx ?? 0.5], {
     extrapolateLeft: "clamp",
@@ -97,7 +111,7 @@ const VideoRecortado: React.FC<{ seg: Segmento; anchoClip?: number }> = ({ seg }
     easing: Easing.inOut(Easing.quad),
   });
   const zoom = (seg.zoom ?? 1) * (seg.punchIn ? 1.25 : 1);
-  // El clip se escala para que su alto llene el cuadro: 16:9 a 1920 de alto = 3413 de ancho.
+  // El clip se escala para que su alto llene el cuadro.
   const altoClip = ALTO * zoom;
   const anchoClip = (altoClip * 16) / 9;
   const left = Math.min(0, Math.max(ANCHO - anchoClip, ANCHO / 2 - cx * anchoClip));
@@ -139,8 +153,17 @@ const Palabra: React.FC<{ parte: z.infer<typeof parteSchema>; color: string; tam
   </span>
 );
 
-const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean }> = ({ t, color, sobreVideo }) => {
+const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: number }> = ({
+  t,
+  color,
+  sobreVideo,
+  cx,
+}) => {
   const frame = useCurrentFrame();
+  const { ANCHO, ALTO, horizontal } = useMedidas();
+  // En horizontal los textos acompañan a la persona; en vertical la persona queda al centro.
+  const centroX = (t.x ?? (horizontal ? cx : 0.5)) * ANCHO;
+  const separacion = horizontal ? 110 : 125;
   if (t.parpadeo && Math.floor(frame / 3) % 2 === 1) {
     return null;
   }
@@ -151,14 +174,14 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean }> = ({
     const [izq, ...der] = t.partes;
     return (
       <AbsoluteFill>
-        <div style={{ position: "absolute", top: y * ALTO, right: ANCHO / 2 + 125, transform: "translateY(-50%)" }}>
+        <div style={{ position: "absolute", top: y * ALTO, right: ANCHO - centroX + separacion, transform: "translateY(-50%)" }}>
           <Palabra parte={izq} color={color} tamano={tamano} sobreVideo={sobreVideo} />
         </div>
         <div
           style={{
             position: "absolute",
             top: y * ALTO,
-            left: ANCHO / 2 + 125,
+            left: centroX + separacion,
             transform: "translateY(-50%)",
             display: "flex",
             flexDirection: "column",
@@ -173,15 +196,19 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean }> = ({
     );
   }
 
-  const top = t.lugar === "arriba" ? 330 : t.lugar === "abajo" ? 1420 : y * ALTO;
+  const top =
+    t.lugar === "arriba" ? (horizontal ? 0.2 : 0.17) * ALTO : t.lugar === "abajo" ? (horizontal ? 0.8 : 0.74) * ALTO : y * ALTO;
+  // En horizontal, centro/arriba/abajo siguen a la persona salvo que se fije x.
+  const ancho = horizontal ? 1100 : ANCHO - 140;
+  const izquierda = Math.min(Math.max(centroX - ancho / 2, 60), ANCHO - 60 - ancho);
   return (
     <AbsoluteFill>
       <div
         style={{
           position: "absolute",
           top,
-          left: 70,
-          right: 70,
+          left: izquierda,
+          width: ancho,
           transform: "translateY(-50%)",
           display: "flex",
           justifyContent: "center",
@@ -206,7 +233,7 @@ const Textos: React.FC<{ seg: Segmento; color: string; sobreVideo: boolean }> = 
     <>
       {(seg.textos ?? []).map((t, i) => (
         <Sequence key={i} from={framesDe(t.desde, fps)} durationInFrames={framesDe(t.hasta - t.desde, fps)} layout="none">
-          <CapaTexto t={t} color={color} sobreVideo={sobreVideo} />
+          <CapaTexto t={t} color={color} sobreVideo={sobreVideo} cx={seg.cx ?? 0.5} />
         </Sequence>
       ))}
     </>
@@ -240,12 +267,14 @@ const Placa: React.FC<{ seg: Segmento }> = ({ seg }) => {
   );
 };
 
-const NotaAMano: React.FC<{ texto: string }> = ({ texto }) => (
+const NotaAMano: React.FC<{ texto: string; cx: number }> = ({ texto, cx }) => {
+  const { ANCHO, ALTO, horizontal } = useMedidas();
+  return (
   <div
     style={{
       position: "absolute",
-      top: 640,
-      left: ANCHO / 2 + 30,
+      top: (horizontal ? 0.22 : 0.33) * ALTO,
+      left: (horizontal ? cx : 0.5) * ANCHO + 30,
       transform: "rotate(-8deg)",
       fontFamily: fuenteManuscrita,
       fontSize: 110,
@@ -255,11 +284,13 @@ const NotaAMano: React.FC<{ texto: string }> = ({ texto }) => (
   >
     {texto}
   </div>
-);
+  );
+};
 
 const Cierre: React.FC<{ textoFinal: string }> = ({ textoFinal }) => {
   const frame = useCurrentFrame();
   const opacity = interpolate(frame, [0, 8], [0, 1], { extrapolateRight: "clamp" });
+  const { horizontal } = useMedidas();
   return (
     <AbsoluteFill
       style={{
@@ -271,7 +302,7 @@ const Cierre: React.FC<{ textoFinal: string }> = ({ textoFinal }) => {
       }}
     >
       <div style={{ opacity, display: "flex", flexDirection: "column", alignItems: "center", gap: 24 }}>
-        <Img src={staticFile(brand.logo.sobreAzul)} style={{ width: 560 }} />
+        <Img src={staticFile(brand.logo.sobreAzul)} style={{ width: horizontal ? 420 : 560 }} />
         <div style={{ color: brand.colors.claro, fontSize: 104, fontWeight: 700, lineHeight: 0.95, fontFamily: fuenteTitulos }}>
           {textoFinal}
         </div>
@@ -301,7 +332,7 @@ export const ReelDialogo: React.FC<Props> = ({ segmentos, textoFinal, duracionCi
             ) : (
               <Fragment>
                 <VideoRecortado seg={seg} />
-                {seg.notaAMano ? <NotaAMano texto={seg.notaAMano} /> : null}
+                {seg.notaAMano ? <NotaAMano texto={seg.notaAMano} cx={seg.cx ?? 0.5} /> : null}
                 <Textos seg={seg} color={brand.colors.claro} sobreVideo />
               </Fragment>
             )}

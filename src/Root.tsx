@@ -61,7 +61,7 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         durationInFrames={FPS * 10}
         calculateMetadata={calculateReelDialogoMetadata}
-        defaultProps={{ segmentos: [], textoFinal: "Boina Orejeada", duracionCierre: 1.5 }}
+        defaultProps={{ formato: "horizontal", segmentos: [], textoFinal: "Boina Orejeada", duracionCierre: 1.5 }}
       />
     </>
   );

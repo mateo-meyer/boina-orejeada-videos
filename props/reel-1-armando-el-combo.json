@@ -7,12 +7,12 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4287.mp4",
    "inicio": 5.8,
-   "duracion": 1.4,
+   "duracion": 1.9,
    "cx": 0.27,
    "textos": [
     {
-     "desde": 0,
-     "hasta": 0.5,
+     "desde": 0.0,
+     "hasta": 0.68,
      "lugar": "centro",
      "partes": [
       {
@@ -22,8 +22,8 @@
      "parpadeo": true
     },
     {
-     "desde": 0.5,
-     "hasta": 1.4,
+     "desde": 0.68,
+     "hasta": 1.9,
      "lugar": "centro",
      "partes": [
       {
@@ -84,12 +84,12 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4284.mp4",
    "inicio": 4.4,
-   "duracion": 0.9,
+   "duracion": 1.4,
    "cx": 0.45,
    "textos": [
     {
-     "desde": 0,
-     "hasta": 0.9,
+     "desde": 0.0,
+     "hasta": 1.4,
      "lugar": "abajo",
      "partes": [
       {
@@ -108,12 +108,12 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4286.mp4",
    "inicio": 14.0,
-   "duracion": 0.9,
+   "duracion": 1.4,
    "cx": 0.55,
    "textos": [
     {
-     "desde": 0,
-     "hasta": 0.9,
+     "desde": 0.0,
+     "hasta": 1.4,
      "lugar": "abajo",
      "partes": [
       {
@@ -132,12 +132,12 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4288.mp4",
    "inicio": 13.0,
-   "duracion": 1.4,
+   "duracion": 1.9,
    "cx": 0.52,
    "textos": [
     {
-     "desde": 0,
-     "hasta": 0.6,
+     "desde": 0.0,
+     "hasta": 0.81,
      "lugar": "flanco",
      "partes": [
       {
@@ -150,8 +150,8 @@
      ]
     },
     {
-     "desde": 0.6,
-     "hasta": 1.4,
+     "desde": 0.81,
+     "hasta": 1.9,
      "lugar": "flanco",
      "partes": [
       {
@@ -205,7 +205,7 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4288.mp4",
    "inicio": 58.0,
-   "duracion": 0.8,
+   "duracion": 1.3,
    "cx": 0.52
   },
   {

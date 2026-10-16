@@ -1,6 +1,6 @@
 // Portada del Reel para el feed: 1080x1920, con todo lo importante dentro
 // del recorte 3:4 central (y 240–1680) que muestra la grilla de Instagram.
-import { AbsoluteFill, Img, staticFile } from "remotion";
+import { AbsoluteFill, Img, staticFile, useVideoConfig } from "remotion";
 import { z } from "zod";
 import { brand } from "../brand";
 import { fuenteManuscrita, fuenteSegundaLinea, fuenteTitulos } from "../fonts";
@@ -92,7 +92,56 @@ const Arco: React.FC<P> = ({ titulo, nota }) => (
 );
 
 // Azul con tres fotos del reel como tira, cada una con su etiqueta.
-const Tira: React.FC<P> = ({ titulo, etiquetas, nota }) => {
+const Tira: React.FC<P> = (p) => {
+  const { width, height } = useVideoConfig();
+  return width > height ? <TiraHorizontal {...p} /> : <TiraVertical {...p} />;
+};
+
+// La misma tira en 16:9: título arriba, las tres fotos en fila.
+const TiraHorizontal: React.FC<P> = ({ titulo, etiquetas, nota }) => {
+  const fotos = [
+    { src: "portada/camina.jpg", pos: "42% 40%", giro: -3, y: 330 },
+    { src: "portada/mates.jpg", pos: "76% 35%", giro: 2.5, y: 360 },
+    { src: "portada/raices-fondo.jpg", pos: "64% 45%", giro: -2, y: 330 },
+  ];
+  return (
+    <AbsoluteFill style={{ backgroundColor: brand.colors.azul }}>
+      <div style={{ position: "absolute", top: 70, width: "100%", textAlign: "center", fontFamily: fuenteTitulos, fontWeight: 700, fontSize: 210, letterSpacing: -5, lineHeight: 0.9, color: brand.colors.claro }}>
+        {titulo}
+      </div>
+      {fotos.map((f, i) => (
+        <div
+          key={i}
+          style={{
+            position: "absolute",
+            top: f.y,
+            left: 110 + i * 580,
+            width: 540,
+            height: 440,
+            border: `12px solid ${brand.colors.claro}`,
+            transform: `rotate(${f.giro}deg)`,
+            boxShadow: "0 18px 40px rgba(0,0,0,0.4)",
+            overflow: "hidden",
+          }}
+        >
+          <Img src={staticFile(f.src)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: f.pos }} />
+        </div>
+      ))}
+      {etiquetas.map((e, i) => (
+        <div key={i} style={{ position: "absolute", top: [740, 770, 740][i], left: 170 + i * 580 }}>
+          <Etiqueta texto={e} i={i} tamano={60} />
+        </div>
+      ))}
+      <div style={{ position: "absolute", top: 905, left: 0, width: "100%", display: "flex", justifyContent: "center", alignItems: "center", gap: 20 }}>
+        <Sello tamano={76} />
+        <span style={{ fontFamily: fuenteSegundaLinea, fontStyle: "italic", fontSize: 52, color: brand.colors.cueroClaro }}>una serie de Boina Orejeada</span>
+      </div>
+      <div style={{ position: "absolute", top: 880, right: 110, transform: "rotate(-5deg)", fontFamily: fuenteManuscrita, fontSize: 70, color: brand.colors.cueroClaro }}>{nota}</div>
+    </AbsoluteFill>
+  );
+};
+
+const TiraVertical: React.FC<P> = ({ titulo, etiquetas, nota }) => {
   const fotos = [
     { src: "portada/camina.jpg", pos: "42% 40%", giro: -3, x: 90 },
     { src: "portada/mates.jpg", pos: "76% 35%", giro: 2.5, x: 330 },

@@ -79,6 +79,21 @@ export const RemotionRoot: React.FC = () => {
           variante: "polaroid",
         }}
       />
+      <Still
+        id="PortadaHorizontal"
+        component={Portada}
+        schema={portadaSchema}
+        width={1920}
+        height={1080}
+        defaultProps={{
+          fondo: "portada/raices-fondo.jpg",
+          encuadre: "60% 50%",
+          titulo: "RAÍCES",
+          etiquetas: ["historias…", "leyendas…", "canciones…"],
+          nota: "próximamente",
+          variante: "tira",
+        }}
+      />
     </>
   );
 };

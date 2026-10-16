@@ -1,4 +1,5 @@
-import { Composition } from "remotion";
+import { Composition, Still } from "remotion";
+import { Portada, portadaSchema } from "./compositions/Portada";
 import { ReelPromo, reelPromoSchema } from "./compositions/ReelPromo";
 import {
   ClipEdit,
@@ -62,6 +63,20 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={FPS * 10}
         calculateMetadata={calculateReelDialogoMetadata}
         defaultProps={{ formato: "horizontal", segmentos: [], textoFinal: "Boina Orejeada", duracionCierre: 1.5 }}
+      />
+      <Still
+        id="Portada"
+        component={Portada}
+        schema={portadaSchema}
+        width={1080}
+        height={1920}
+        defaultProps={{
+          fondo: "portada/raices-fondo.jpg",
+          cx: 0.62,
+          titulo: "RAÍCES",
+          bajada: "historias, leyendas y canciones",
+          pie: "Boina Orejeada · próximamente",
+        }}
       />
     </>
   );

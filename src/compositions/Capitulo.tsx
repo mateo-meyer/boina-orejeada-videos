@@ -142,7 +142,7 @@ const Subtitulo: React.FC<{ s: z.infer<typeof subtituloSchema> }> = ({ s }) => {
   );
 };
 
-const Dato: React.FC<{ d: z.infer<typeof datoSchema> }> = ({ d }) => {
+export const Dato: React.FC<{ d: z.infer<typeof datoSchema> }> = ({ d }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const pop = spring({ frame, fps, config: { damping: 12, stiffness: 180 } });
@@ -194,7 +194,7 @@ const TomaVideo: React.FC<{ t: Toma }> = ({ t }) => {
   );
 };
 
-const Placa: React.FC<{ serie: string; capitulo: string; titulo: string }> = ({ serie, capitulo, titulo }) => {
+export const Placa: React.FC<{ serie: string; capitulo: string; titulo: string }> = ({ serie, capitulo, titulo }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const a = spring({ frame, fps, config: { damping: 14 } });
@@ -223,7 +223,7 @@ const Placa: React.FC<{ serie: string; capitulo: string; titulo: string }> = ({ 
   );
 };
 
-const Cierre: React.FC<{ pregunta: string }> = ({ pregunta }) => {
+export const Cierre: React.FC<{ pregunta: string }> = ({ pregunta }) => {
   const frame = useCurrentFrame();
   const { fps } = useVideoConfig();
   const a = spring({ frame, fps, config: { damping: 14 } });
@@ -257,3 +257,13 @@ export const Capitulo: React.FC<Props> = (p) => {
     </AbsoluteFill>
   );
 };
+
+// Tarjeta de dato sola, sobre fondo transparente, para usar en otro editor.
+export const tarjetaSchema = z.object({ titulo: z.string(), bajada: z.string().optional() });
+export const TarjetaDato: React.FC<z.infer<typeof tarjetaSchema>> = ({ titulo, bajada }) => (
+  <AbsoluteFill>
+    <Dato d={{ desde: 0, hasta: 3, titulo, bajada, y: 0.16 }} />
+  </AbsoluteFill>
+);
+export const PlacaSola: React.FC<{ serie: string; capitulo: string; titulo: string }> = (p) => <Placa {...p} />;
+export const CierreSolo: React.FC<{ pregunta: string }> = (p) => <Cierre {...p} />;

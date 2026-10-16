@@ -131,27 +131,52 @@ const VideoRecortado: React.FC<{ seg: Segmento }> = ({ seg }) => {
 
 const sombra = "0 0 28px rgba(28,26,23,0.75), 0 2px 6px rgba(28,26,23,0.6)";
 
-const Palabra: React.FC<{ parte: z.infer<typeof parteSchema>; color: string; tamano: number; sobreVideo: boolean }> = ({
-  parte,
-  color,
-  tamano,
-  sobreVideo,
-}) => (
-  <span
-    style={{
-      fontFamily: fuenteTitulos,
-      fontWeight: parte.peso === "fina" ? 400 : 700,
-      fontSize: parte.peso === "fina" ? tamano * 0.82 : tamano,
-      lineHeight: 0.95,
-      letterSpacing: parte.peso === "fina" ? 0 : -1,
-      color,
-      textShadow: sobreVideo ? sombra : undefined,
-      whiteSpace: "nowrap",
-    }}
-  >
-    {parte.texto}
-  </span>
-);
+// Sobre video cada palabra va en su propia etiqueta de color de la marca:
+// las fuertes en azul con letra clara, las finas en crema con letra azul,
+// apenas giradas para que parezcan papelitos pegados.
+const Palabra: React.FC<{
+  parte: z.infer<typeof parteSchema>;
+  color: string;
+  tamano: number;
+  sobreVideo: boolean;
+  indice?: number;
+}> = ({ parte, color, tamano, sobreVideo, indice = 0 }) => {
+  const frame = useCurrentFrame();
+  const fina = parte.peso === "fina";
+  const fontSize = fina ? tamano * 0.82 : tamano;
+  const texto = {
+    fontFamily: fuenteTitulos,
+    fontWeight: fina ? 500 : 700,
+    fontSize,
+    lineHeight: 0.95,
+    letterSpacing: fina ? 0 : -1,
+    whiteSpace: "nowrap" as const,
+  };
+  if (!sobreVideo) {
+    return <span style={{ ...texto, color }}>{parte.texto}</span>;
+  }
+  const entrada = interpolate(frame - indice * 2, [0, 4], [0.85, 1], {
+    extrapolateLeft: "clamp",
+    extrapolateRight: "clamp",
+  });
+  const giro = indice % 2 === 0 ? -1.5 : 1.5;
+  return (
+    <span
+      style={{
+        ...texto,
+        display: "inline-block",
+        color: fina ? brand.colors.azul : brand.colors.claro,
+        backgroundColor: fina ? brand.colors.crema : brand.colors.azul,
+        padding: `${fontSize * 0.14}px ${fontSize * 0.26}px ${fontSize * 0.2}px`,
+        borderRadius: fontSize * 0.12,
+        boxShadow: "0 6px 18px rgba(28,26,23,0.35)",
+        transform: `rotate(${giro}deg) scale(${entrada})`,
+      }}
+    >
+      {parte.texto}
+    </span>
+  );
+};
 
 const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: number }> = ({
   t,
@@ -167,7 +192,7 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: nu
   if (t.parpadeo && Math.floor(frame / 3) % 2 === 1) {
     return null;
   }
-  const tamano = t.tamano ?? (t.lugar === "centro" ? 150 : t.lugar === "flanco" ? 78 : 84);
+  const tamano = t.tamano ?? (t.lugar === "centro" ? 150 : t.lugar === "flanco" ? 100 : 84);
   const y = t.y ?? (t.lugar === "flanco" ? 0.47 : 0.5);
 
   if (t.lugar === "flanco") {
@@ -175,7 +200,7 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: nu
     return (
       <AbsoluteFill>
         <div style={{ position: "absolute", top: y * ALTO, right: ANCHO - centroX + separacion, transform: "translateY(-50%)" }}>
-          <Palabra parte={izq} color={color} tamano={tamano} sobreVideo={sobreVideo} />
+          <Palabra parte={izq} color={color} tamano={tamano} sobreVideo={sobreVideo} indice={0} />
         </div>
         <div
           style={{
@@ -185,11 +210,11 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: nu
             transform: "translateY(-50%)",
             display: "flex",
             flexDirection: "column",
-            gap: 8,
+            gap: 14,
           }}
         >
           {der.map((p, i) => (
-            <Palabra key={i} parte={p} color={color} tamano={tamano} sobreVideo={sobreVideo} />
+            <Palabra key={i} parte={p} color={color} tamano={tamano} sobreVideo={sobreVideo} indice={i + 1} />
           ))}
         </div>
       </AbsoluteFill>
@@ -220,7 +245,7 @@ const CapaTexto: React.FC<{ t: Texto; color: string; sobreVideo: boolean; cx: nu
         }}
       >
         {t.partes.map((p, i) => (
-          <Palabra key={i} parte={p} color={color} tamano={tamano} sobreVideo={sobreVideo} />
+          <Palabra key={i} parte={p} color={color} tamano={tamano} sobreVideo={sobreVideo} indice={i} />
         ))}
       </div>
     </AbsoluteFill>

@@ -37,7 +37,7 @@ export const Portada: React.FC<z.infer<typeof portadaSchema>> = ({ fondo, cx, ti
       <div
         style={{
           position: "absolute",
-          top: 1540,
+          top: 1505,
           left: "50%",
           transform: "translateX(-50%)",
           display: "flex",

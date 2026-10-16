@@ -72,10 +72,11 @@ export const RemotionRoot: React.FC = () => {
         height={1920}
         defaultProps={{
           fondo: "portada/raices-fondo.jpg",
-          cx: 0.62,
+          encuadre: "60% 50%",
           titulo: "RAÍCES",
-          bajada: "historias, leyendas y canciones",
-          pie: "Boina Orejeada · próximamente",
+          etiquetas: ["historias…", "leyendas…", "canciones…"],
+          nota: "próximamente",
+          variante: "polaroid",
         }}
       />
     </>

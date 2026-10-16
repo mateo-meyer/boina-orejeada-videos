@@ -376,12 +376,12 @@
    "tipo": "video",
    "archivo": "clips/reel1/IMG_4282.mp4",
    "inicio": 8.4,
-   "duracion": 2.5,
+   "duracion": 7.5,
    "cx": 0.6,
    "textos": [
     {
      "desde": 0,
-     "hasta": 2.5,
+     "hasta": 7.5,
      "lugar": "abajo",
      "partes": [
       {

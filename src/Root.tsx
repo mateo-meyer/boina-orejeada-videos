@@ -1,5 +1,6 @@
 import { Composition, Still } from "remotion";
 import { Portada, portadaSchema } from "./compositions/Portada";
+import { Capitulo, calculateCapituloMetadata, capituloSchema } from "./compositions/Capitulo";
 import { ReelPromo, reelPromoSchema } from "./compositions/ReelPromo";
 import {
   ClipEdit,
@@ -63,6 +64,17 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={FPS * 10}
         calculateMetadata={calculateReelDialogoMetadata}
         defaultProps={{ formato: "horizontal", segmentos: [], textoFinal: "Boina Orejeada", duracionCierre: 1.5 }}
+      />
+      <Composition
+        id="Capitulo"
+        component={Capitulo}
+        schema={capituloSchema}
+        fps={30}
+        width={1080}
+        height={1920}
+        durationInFrames={300}
+        calculateMetadata={calculateCapituloMetadata}
+        defaultProps={{ serie: "RAÍCES", capitulo: "Capítulo 1", titulo: "Balderrama", placaDespuesDe: 0, duracionPlaca: 1.5, tomas: [], pregunta: "", duracionCierre: 2.5 }}
       />
       <Still
         id="Portada"

@@ -7,23 +7,23 @@
  "tomas": [
   {
    "archivo": "clips/cap1/IMG_4313.mp4",
-   "inicio": 1.75,
-   "fin": 5.95,
+   "inicio": 1.5,
+   "fin": 6.2,
    "zoom": 1.1,
    "cy": 0.4,
    "subtitulos": [
     {
      "texto": "La peña más",
-     "desde": 0.3,
-     "hasta": 0.9,
+     "desde": 0.17,
+     "hasta": 1.29,
      "resaltar": [
       "peña"
      ]
     },
     {
      "texto": "famosa del folklore",
-     "desde": 0.9,
-     "hasta": 1.95,
+     "desde": 1.29,
+     "hasta": 2.41,
      "resaltar": [
       "famosa",
       "folklore"
@@ -31,14 +31,14 @@
     },
     {
      "texto": "arrancó con mesas",
-     "desde": 1.95,
-     "hasta": 2.88,
+     "desde": 2.41,
+     "hasta": 3.39,
      "resaltar": []
     },
     {
      "texto": "que vinieron de Córdoba.",
-     "desde": 2.88,
-     "hasta": 4.2,
+     "desde": 3.39,
+     "hasta": 4.7,
      "resaltar": [
       "Córdoba"
      ]
@@ -48,23 +48,30 @@
   {
    "archivo": "clips/cap1/IMG_4315.mp4",
    "inicio": 0.6,
-   "fin": 4.04,
+   "fin": 3.9,
    "zoom": 1.06,
    "cy": 0.4,
    "subtitulos": [
     {
-     "texto": "Balderrama abrió en Salta,",
-     "desde": 0.24,
-     "hasta": 2.69,
+     "texto": "Balderrama abrió",
+     "desde": 0.17,
+     "hasta": 0.98,
      "resaltar": [
-      "Salta",
       "Balderrama"
      ]
     },
     {
+     "texto": "en Salta,",
+     "desde": 0.98,
+     "hasta": 1.85,
+     "resaltar": [
+      "Salta"
+     ]
+    },
+    {
      "texto": "en 1953.",
-     "desde": 2.69,
-     "hasta": 3.44,
+     "desde": 1.85,
+     "hasta": 3.3,
      "resaltar": [
       "1953"
      ]
@@ -72,8 +79,8 @@
    ],
    "datos": [
     {
-     "desde": 1.2,
-     "hasta": 3.44,
+     "desde": 2.1,
+     "hasta": 3.3,
      "titulo": "1953",
      "bajada": "Salta",
      "y": 0.16
@@ -81,57 +88,50 @@
    ]
   },
   {
-   "archivo": "clips/cap1/IMG_4324.mp4",
-   "inicio": 1.85,
-   "fin": 10.25,
-   "zoom": 1.06,
-   "cy": 0.4,
+   "archivo": "clips/cap1/IMG_4321.mp4",
+   "inicio": 4.7,
+   "fin": 11.9,
+   "zoom": 1.08,
+   "cy": 0.5,
    "subtitulos": [
     {
-     "texto": "Era un bodegón:",
-     "desde": 0.15,
-     "hasta": 1.33,
+     "texto": "Era un bodegón,",
+     "desde": 0.17,
+     "hasta": 1.63,
      "resaltar": [
       "bodegón"
      ]
     },
     {
-     "texto": "piso de ladrillo,",
-     "desde": 1.33,
-     "hasta": 2.66,
+     "texto": "techo de chapa,",
+     "desde": 1.63,
+     "hasta": 2.59,
      "resaltar": []
     },
     {
-     "texto": "techo de chapa",
-     "desde": 2.66,
-     "hasta": 3.76,
+     "texto": "piso de ladrillo",
+     "desde": 2.59,
+     "hasta": 3.61,
      "resaltar": []
     },
     {
      "texto": "y mesas de",
-     "desde": 3.76,
-     "hasta": 4.55,
+     "desde": 3.61,
+     "hasta": 4.57,
      "resaltar": []
     },
     {
-     "texto": "hierro de una",
-     "desde": 4.55,
-     "hasta": 5.57,
+     "texto": "una cervecería de",
+     "desde": 4.57,
+     "hasta": 5.37,
      "resaltar": []
     },
     {
-     "texto": "cervecería cordobesa,",
-     "desde": 5.57,
-     "hasta": 7.22,
+     "texto": "Córdoba, la Río Segundo.",
+     "desde": 5.37,
+     "hasta": 7.16,
      "resaltar": [
-      "cordobesa"
-     ]
-    },
-    {
-     "texto": "la Río Segundo.",
-     "desde": 7.22,
-     "hasta": 8.4,
-     "resaltar": [
+      "Córdoba",
       "Río",
       "Segundo"
      ]
@@ -139,104 +139,17 @@
    ],
    "datos": [
     {
-     "desde": 5.2,
-     "hasta": 8.4,
+     "desde": 6.1,
+     "hasta": 7.2,
      "titulo": "Río Segundo",
      "bajada": "cervecería cordobesa",
      "y": 0.16
-    }
-   ]
-  },
-  {
-   "archivo": "clips/cap1/IMG_4317.mp4",
-   "inicio": 2.1,
-   "fin": 6.5,
-   "zoom": 1.06,
-   "cy": 0.4,
-   "subtitulos": [
-    {
-     "texto": "Nada del otro mundo.",
-     "desde": 0.3,
-     "hasta": 1.38,
-     "resaltar": [
-      "mundo"
-     ]
     },
     {
-     "texto": "Hasta que dos",
-     "desde": 1.38,
-     "hasta": 2.08,
-     "resaltar": []
-    },
-    {
-     "texto": "clientes de siempre",
-     "desde": 2.08,
-     "hasta": 3.11,
-     "resaltar": []
-    },
-    {
-     "texto": "le cambiaron el destino.",
-     "desde": 3.11,
-     "hasta": 4.4,
-     "resaltar": [
-      "destino"
-     ]
-    }
-   ]
-  },
-  {
-   "archivo": "clips/cap1/IMG_4319.mp4",
-   "inicio": 0.2,
-   "fin": 4.5,
-   "zoom": 1.06,
-   "cy": 0.4,
-   "subtitulos": [
-    {
-     "texto": "Un poeta,",
-     "desde": 0.23,
-     "hasta": 0.82,
-     "resaltar": [
-      "poeta"
-     ]
-    },
-    {
-     "texto": "Manuel J. Castilla,",
-     "desde": 0.82,
-     "hasta": 2.07,
-     "resaltar": [
-      "Castilla"
-     ]
-    },
-    {
-     "texto": "y un pianista,",
-     "desde": 2.07,
-     "hasta": 2.99,
-     "resaltar": [
-      "pianista"
-     ]
-    },
-    {
-     "texto": "el Cuchi Leguizamón.",
-     "desde": 2.99,
-     "hasta": 4.3,
-     "resaltar": [
-      "Leguizamón"
-     ]
-    }
-   ],
-   "datos": [
-    {
-     "desde": 0.3,
-     "hasta": 2.1,
-     "titulo": "Manuel J. Castilla",
-     "bajada": "poeta",
-     "y": 0.16
-    },
-    {
-     "desde": 2.2,
-     "hasta": 4.3,
-     "titulo": "Cuchi Leguizamón",
-     "bajada": "pianista",
+     "desde": 0.9,
+     "hasta": 2.6,
+     "titulo": "Bodegón",
+     "bajada": "techo de chapa, piso de ladrillo",
      "y": 0.16
     }
    ]
@@ -244,30 +157,109 @@
   {
    "archivo": "clips/cap1/IMG_4322.mp4",
    "inicio": 0.0,
-   "fin": 4.25,
+   "fin": 4.35,
    "zoom": 1.06,
    "cy": 0.4,
    "subtitulos": [
     {
-     "texto": "Le escribieron una",
-     "desde": 0.0,
-     "hasta": 2.01,
+     "texto": "Nada del otro mundo,",
+     "desde": 0,
+     "hasta": 1.41,
+     "resaltar": [
+      "mundo"
+     ]
+    },
+    {
+     "texto": "hasta que dos",
+     "desde": 1.41,
+     "hasta": 1.85,
+     "resaltar": []
+    },
+    {
+     "texto": "clientes de siempre",
+     "desde": 1.85,
+     "hasta": 2.69,
+     "resaltar": []
+    },
+    {
+     "texto": "le cambiaron el destino.",
+     "desde": 2.69,
+     "hasta": 4.35,
+     "resaltar": [
+      "destino"
+     ]
+    }
+   ]
+  },
+  {
+   "archivo": "clips/cap1/IMG_4324.mp4",
+   "inicio": 2.9,
+   "fin": 10.0,
+   "zoom": 1.06,
+   "cy": 0.4,
+   "subtitulos": [
+    {
+     "texto": "Un poeta,",
+     "desde": 0.19,
+     "hasta": 1.45,
+     "resaltar": []
+    },
+    {
+     "texto": "Manuel José Castilla,",
+     "desde": 1.45,
+     "hasta": 2.81,
+     "resaltar": [
+      "Castilla"
+     ]
+    },
+    {
+     "texto": "y un pianista,",
+     "desde": 2.81,
+     "hasta": 3.75,
+     "resaltar": []
+    },
+    {
+     "texto": "el Cuchi Leguizamón,",
+     "desde": 3.75,
+     "hasta": 5.11,
+     "resaltar": [
+      "Cuchi",
+      "Leguizamón"
+     ]
+    },
+    {
+     "texto": "le escribieron una",
+     "desde": 5.11,
+     "hasta": 5.99,
      "resaltar": []
     },
     {
      "texto": "zamba con su nombre.",
-     "desde": 2.01,
-     "hasta": 4.25,
+     "desde": 5.99,
+     "hasta": 7.1,
      "resaltar": [
-      "zamba",
-      "nombre"
+      "zamba"
      ]
     }
    ],
    "datos": [
     {
-     "desde": 1.6,
-     "hasta": 4.25,
+     "desde": 1.45,
+     "hasta": 3.7,
+     "titulo": "Manuel J. Castilla",
+     "bajada": "poeta",
+     "y": 0.16
+    },
+    {
+     "desde": 3.75,
+     "hasta": 5.1,
+     "titulo": "Cuchi Leguizamón",
+     "bajada": "pianista",
+     "y": 0.16
+    },
+    {
+     "desde": 5.7,
+     "hasta": 7.1,
      "titulo": "«Balderrama»",
      "bajada": "zamba",
      "y": 0.16
@@ -275,39 +267,39 @@
    ]
   },
   {
-   "archivo": "clips/cap1/IMG_4325.mp4",
-   "inicio": 2.5,
-   "fin": 7.4,
+   "archivo": "clips/cap1/IMG_4317.mp4",
+   "inicio": 2.2,
+   "fin": 6.7,
    "zoom": 1.06,
    "cy": 0.4,
    "subtitulos": [
     {
-     "texto": "Mercedes Sosa la cantó,",
-     "desde": 0.27,
-     "hasta": 1.84,
+     "texto": "Mercedes Sosa la",
+     "desde": 0.23,
+     "hasta": 1.23,
      "resaltar": [
-      "Sosa",
-      "Mercedes"
+      "Mercedes",
+      "Sosa"
      ]
     },
     {
-     "texto": "y Balderrama se",
-     "desde": 1.84,
-     "hasta": 2.86,
+     "texto": "cantó, y Balderrama",
+     "desde": 1.23,
+     "hasta": 2.47,
      "resaltar": [
       "Balderrama"
      ]
     },
     {
-     "texto": "hizo conocido en",
-     "desde": 2.86,
-     "hasta": 3.95,
+     "texto": "se hizo conocido",
+     "desde": 2.47,
+     "hasta": 3.39,
      "resaltar": []
     },
     {
-     "texto": "todo el mundo.",
-     "desde": 3.95,
-     "hasta": 4.9,
+     "texto": "en todo el mundo.",
+     "desde": 3.39,
+     "hasta": 4.5,
      "resaltar": [
       "mundo"
      ]
@@ -315,24 +307,24 @@
    ],
    "datos": [
     {
-     "desde": 0.3,
-     "hasta": 2.4,
+     "desde": 0.25,
+     "hasta": 1.8,
      "titulo": "Mercedes Sosa",
      "y": 0.16
     }
    ]
   },
   {
-   "archivo": "clips/cap1/IMG_4321.mp4",
-   "inicio": 4.9,
-   "fin": 13.4,
+   "archivo": "clips/cap1/IMG_4325.mp4",
+   "inicio": 2.2,
+   "fin": 8.4,
    "zoom": 1.08,
-   "cy": 0.5,
+   "cy": 0.4,
    "subtitulos": [
     {
      "texto": "Una peña salteña",
-     "desde": 0.3,
-     "hasta": 1.76,
+     "desde": 0.17,
+     "hasta": 1.91,
      "resaltar": [
       "peña",
       "salteña"
@@ -340,22 +332,22 @@
     },
     {
      "texto": "con mesas cordobesas.",
-     "desde": 1.76,
-     "hasta": 3.67,
+     "desde": 1.91,
+     "hasta": 3.41,
      "resaltar": [
       "cordobesas"
      ]
     },
     {
      "texto": "¿Fuiste alguna vez",
-     "desde": 3.67,
-     "hasta": 5.31,
+     "desde": 3.41,
+     "hasta": 4.25,
      "resaltar": []
     },
     {
      "texto": "a Balderrama?",
-     "desde": 5.31,
-     "hasta": 7.9,
+     "desde": 4.25,
+     "hasta": 5.4,
      "resaltar": [
       "Balderrama"
      ]

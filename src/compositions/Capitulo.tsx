@@ -43,6 +43,14 @@ const tomaSchema = z.object({
   cy: z.number().optional(),
   subtitulos: z.array(subtituloSchema),
   datos: z.array(datoSchema).optional(),
+  // Subtítulos palabra por palabra (si están, reemplazan a "subtitulos").
+  palabras: z.array(z.object({ w: z.string(), a: z.number(), b: z.number(), fuerte: z.boolean().optional() })).optional(),
+  // Momentos (en s desde el inicio de la toma) en que el encuadre salta a un primer plano y vuelve.
+  saltos: z.array(z.number()).optional(),
+  // Tramo en blanco y negro [desde, hasta].
+  bn: z.array(z.number()).optional(),
+  // Contador grande: cuenta de "desde" a "hasta" entre a y b.
+  contador: z.object({ de: z.number(), a: z.number(), desde: z.number(), hasta: z.number(), bajada: z.string().optional() }).optional(),
 });
 
 export const capituloSchema = z.object({
@@ -55,6 +63,8 @@ export const capituloSchema = z.object({
   tomas: z.array(tomaSchema),
   pregunta: z.string(),
   duracionCierre: z.number(),
+  // Título fijo arriba durante las tomas (como "historia #1").
+  rotulo: z.string().optional(),
 });
 
 type Props = z.infer<typeof capituloSchema>;
@@ -90,9 +100,10 @@ export const calculateCapituloMetadata: CalculateMetadataFunction<Props> = ({ pr
 // Fundido de entrada y salida de cada bloque, con un empujón de escala.
 const Transicion: React.FC<{ dur: number; children: React.ReactNode; primero: boolean }> = ({ dur, children, primero }) => {
   const frame = useCurrentFrame();
-  const entra = primero ? 1 : interpolate(frame, [0, TRANS], [0, 1], { extrapolateRight: "clamp" });
-  const escala = primero ? 1 : interpolate(frame, [0, TRANS + 4], [1.06, 1], { extrapolateRight: "clamp" });
-  return <AbsoluteFill style={{ opacity: entra, transform: `scale(${escala})` }}>{children}</AbsoluteFill>;
+  const entra = primero ? 1 : interpolate(frame, [0, TRANS / 2], [0, 1], { extrapolateRight: "clamp" });
+  const escala = primero ? 1 : interpolate(frame, [0, TRANS], [1.35, 1], { extrapolateRight: "clamp", easing: (x) => 1 - Math.pow(1 - x, 3) });
+  const blur = primero ? 0 : interpolate(frame, [0, TRANS], [18, 0], { extrapolateRight: "clamp" });
+  return <AbsoluteFill style={{ opacity: entra, transform: `scale(${escala})`, filter: blur > 0.5 ? `blur(${blur}px)` : undefined }}>{children}</AbsoluteFill>;
 };
 
 const Subtitulo: React.FC<{ s: z.infer<typeof subtituloSchema> }> = ({ s }) => {
@@ -171,25 +182,88 @@ export const Dato: React.FC<{ d: z.infer<typeof datoSchema> }> = ({ d }) => {
   );
 };
 
-const TomaVideo: React.FC<{ t: Toma }> = ({ t }) => {
+// Palabra actual, grande y al pecho. Las fuertes van en cursiva serif.
+const PalabraViva: React.FC<{ w: string; fuerte: boolean }> = ({ w, fuerte }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const pop = spring({ frame, fps, config: { damping: 11, stiffness: 260 }, durationInFrames: 6 });
+  return (
+    <div
+      style={{
+        position: "absolute",
+        top: fuerte ? 1150 : 1190,
+        width: "100%",
+        textAlign: "center",
+        transform: `scale(${0.7 + 0.3 * pop})`,
+        fontFamily: fuerte ? fuenteSegundaLinea : fuenteTitulos,
+        fontStyle: fuerte ? "italic" : "normal",
+        fontWeight: fuerte ? 400 : 700,
+        fontSize: fuerte ? 170 : 92,
+        letterSpacing: fuerte ? 0 : -1,
+        lineHeight: 1,
+        color: fuerte ? brand.colors.crema : brand.colors.claro,
+        textShadow: "0 0 26px rgba(45,48,80,0.95), 0 0 8px rgba(45,48,80,0.9), 0 4px 12px rgba(28,26,23,0.6)",
+        padding: "0 40px",
+      }}
+    >
+      {w}
+    </div>
+  );
+};
+
+const Contador: React.FC<{ c: NonNullable<Toma["contador"]> }> = ({ c }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const dur = Math.max(1, f(c.hasta - c.desde));
+  const t = interpolate(frame, [0, dur * 0.6], [0, 1], { extrapolateRight: "clamp", easing: (x) => 1 - Math.pow(1 - x, 3) });
+  const n = Math.round(c.de + (c.a - c.de) * t);
+  const pop = spring({ frame, fps, config: { damping: 12 } });
+  return (
+    <div style={{ position: "absolute", top: 380, width: "100%", textAlign: "center", transform: `scale(${0.6 + 0.4 * pop})` }}>
+      <div style={{ fontFamily: fuenteTitulos, fontWeight: 700, fontSize: 230, letterSpacing: -6, color: brand.colors.claro, textShadow: "0 0 40px rgba(28,26,23,0.6)" }}>{n}</div>
+      {c.bajada ? (
+        <div style={{ display: "inline-block", fontFamily: fuenteTitulos, fontWeight: 700, fontSize: 56, color: brand.colors.azul, backgroundColor: brand.colors.crema, padding: "8px 26px", borderRadius: 10, transform: "rotate(-2deg)" }}>{c.bajada}</div>
+      ) : null}
+    </div>
+  );
+};
+
+const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
   const frame = useCurrentFrame();
   const dur = framesToma(t);
-  const z = interpolate(frame, [0, dur], [1, t.zoom ?? 1.06]);
+  const lento = interpolate(frame, [0, dur], [1, t.zoom ?? 1.06]);
+  const saltos = (t.saltos ?? []).map(f);
+  const cerca = saltos.filter((x) => frame >= x).length % 2 === 1;
+  const z = lento * (cerca ? 1.28 : 1);
+  const bn = t.bn && frame >= f(t.bn[0]) && frame < f(t.bn[1]);
+  const palabra = (t.palabras ?? []).find((p, i, arr) => frame >= f(p.a) && frame < f(arr[i + 1] ? Math.min(arr[i + 1].a, p.b + 0.6) : p.b + 0.4));
   return (
     <AbsoluteFill style={{ backgroundColor: brand.colors.carbon }}>
-      <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `50% ${(t.cy ?? 0.4) * 100}%` }}>
+      <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `50% ${(t.cy ?? 0.4) * 100}%`, filter: bn ? "grayscale(1) contrast(1.1)" : undefined }}>
         <OffthreadVideo src={staticFile(t.archivo)} trimBefore={f(t.inicio)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </AbsoluteFill>
-      {t.subtitulos.map((s, i) => (
-        <Sequence key={i} from={f(s.desde)} durationInFrames={Math.max(1, f(s.hasta - s.desde))} layout="none">
-          <Subtitulo s={s} />
-        </Sequence>
-      ))}
+      {rotulo ? (
+        <div style={{ position: "absolute", top: 270, width: "100%", textAlign: "center", fontFamily: fuenteTitulos, fontWeight: 700, fontSize: 58, letterSpacing: 2, color: brand.colors.claro, textShadow: "0 0 16px rgba(45,48,80,0.9), 0 0 4px rgba(45,48,80,0.9)" }}>
+          {rotulo}
+        </div>
+      ) : null}
+      {t.palabras
+        ? palabra ? <Sequence from={f(palabra.a)} layout="none" key={palabra.a}><PalabraViva w={palabra.w} fuerte={!!palabra.fuerte} /></Sequence> : null
+        : t.subtitulos.map((s, i) => (
+            <Sequence key={i} from={f(s.desde)} durationInFrames={Math.max(1, f(s.hasta - s.desde))} layout="none">
+              <Subtitulo s={s} />
+            </Sequence>
+          ))}
       {(t.datos ?? []).map((d, i) => (
         <Sequence key={"d" + i} from={f(d.desde)} durationInFrames={Math.max(1, f(d.hasta - d.desde))} layout="none">
           <Dato d={d} />
         </Sequence>
       ))}
+      {t.contador ? (
+        <Sequence from={f(t.contador.desde)} durationInFrames={Math.max(1, f(t.contador.hasta - t.contador.desde))} layout="none">
+          <Contador c={t.contador} />
+        </Sequence>
+      ) : null}
     </AbsoluteFill>
   );
 };
@@ -245,7 +319,7 @@ export const Capitulo: React.FC<Props> = (p) => {
         <Sequence key={k} from={it.desde} durationInFrames={it.dur}>
           <Transicion dur={it.dur} primero={k === 0}>
             {it.tipo === "toma" ? (
-              <TomaVideo t={p.tomas[it.i!]} />
+              <TomaVideo t={p.tomas[it.i!]} rotulo={it.i! > p.placaDespuesDe ? p.rotulo : undefined} />
             ) : it.tipo === "placa" ? (
               <Placa serie={p.serie} capitulo={p.capitulo} titulo={p.titulo} />
             ) : (

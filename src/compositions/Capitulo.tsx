@@ -33,6 +33,20 @@ const datoSchema = z.object({
   y: z.number().optional(),
 });
 
+const colorMarca = z.enum(["azul", "claro", "crema", "marron", "cuero", "verde"]);
+const pantallaSchema = z.object({
+  desde: z.number(),
+  hasta: z.number(),
+  fondo: colorMarca,
+  arriba: z.string().optional(), // línea manuscrita
+  titulo: z.string(),
+  abajo: z.string().optional(), // segunda línea
+  imagen: z.string().optional(), // ruta en public/
+  encuadre: z.string().optional(), // object-position de la foto, ej. "50% 20%"
+  contar: z.array(z.number()).optional(), // [de, a]: el título es un número que cuenta
+});
+type Pantalla = z.infer<typeof pantallaSchema>;
+
 const tomaSchema = z.object({
   archivo: z.string(),
   inicio: z.number(),
@@ -51,6 +65,8 @@ const tomaSchema = z.object({
   bn: z.array(z.number()).optional(),
   // Contador grande: cuenta de "desde" a "hasta" entre a y b.
   contador: z.object({ de: z.number(), a: z.number(), desde: z.number(), hasta: z.number(), bajada: z.string().optional() }).optional(),
+  // Pantallas de color a pantalla completa (la voz sigue sonando debajo).
+  pantallas: z.array(pantallaSchema).optional(),
 });
 
 export const capituloSchema = z.object({
@@ -183,30 +199,33 @@ export const Dato: React.FC<{ d: z.infer<typeof datoSchema> }> = ({ d }) => {
 };
 
 // Palabra actual, grande y al pecho. Las fuertes van en cursiva serif.
+// Palabra actual en etiqueta de color, como los textos del teaser RAÍCES
+// (fuerte: azul con letra clara; clave: crema con letra azul, más grande).
 const PalabraViva: React.FC<{ w: string; fuerte: boolean }> = ({ w, fuerte }) => {
   const frame = useCurrentFrame();
-  const { fps } = useVideoConfig();
-  const pop = spring({ frame, fps, config: { damping: 11, stiffness: 260 }, durationInFrames: 6 });
+  const entrada = interpolate(frame, [0, 4], [0.85, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
+  const fontSize = fuerte ? 96 : 78;
   return (
-    <div
-      style={{
-        position: "absolute",
-        top: fuerte ? 1150 : 1190,
-        width: "100%",
-        textAlign: "center",
-        transform: `scale(${0.7 + 0.3 * pop})`,
-        fontFamily: fuerte ? fuenteSegundaLinea : fuenteTitulos,
-        fontStyle: fuerte ? "italic" : "normal",
-        fontWeight: fuerte ? 400 : 700,
-        fontSize: fuerte ? 170 : 92,
-        letterSpacing: fuerte ? 0 : -1,
-        lineHeight: 1,
-        color: fuerte ? brand.colors.crema : brand.colors.claro,
-        textShadow: "0 0 26px rgba(45,48,80,0.95), 0 0 8px rgba(45,48,80,0.9), 0 4px 12px rgba(28,26,23,0.6)",
-        padding: "0 40px",
-      }}
-    >
-      {w}
+    <div style={{ position: "absolute", top: 1440, width: "100%", textAlign: "center" }}>
+      <span
+        style={{
+          display: "inline-block",
+          fontFamily: fuenteTitulos,
+          fontWeight: 700,
+          fontSize,
+          lineHeight: 0.95,
+          letterSpacing: -1,
+          whiteSpace: "nowrap",
+          color: fuerte ? brand.colors.azul : brand.colors.claro,
+          backgroundColor: fuerte ? brand.colors.crema : brand.colors.azul,
+          padding: `${fontSize * 0.14}px ${fontSize * 0.26}px ${fontSize * 0.2}px`,
+          borderRadius: fontSize * 0.12,
+          boxShadow: "0 6px 18px rgba(28,26,23,0.35)",
+          transform: `rotate(${fuerte ? -1.5 : 1.5}deg) scale(${entrada})`,
+        }}
+      >
+        {w}
+      </span>
     </div>
   );
 };
@@ -228,6 +247,63 @@ const Contador: React.FC<{ c: NonNullable<Toma["contador"]> }> = ({ c }) => {
   );
 };
 
+const tinta = (fondo: Pantalla["fondo"]) =>
+  fondo === "claro" || fondo === "crema"
+    ? { titulo: brand.colors.azul, acento: brand.colors.cuero, linea: brand.colors.marron }
+    : { titulo: brand.colors.claro, acento: brand.colors.cueroClaro, linea: brand.colors.crema };
+
+// Pantalla de color de la marca que tapa el video un momento (la voz sigue).
+const PantallaColor: React.FC<{ p: Pantalla }> = ({ p }) => {
+  const frame = useCurrentFrame();
+  const { fps } = useVideoConfig();
+  const dur = Math.max(1, f(p.hasta - p.desde));
+  const ease = (x: number) => 1 - Math.pow(1 - x, 3);
+  // Entra como una cortina desde abajo y sale hacia arriba.
+  const entra = interpolate(frame, [0, 7], [100, 0], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease });
+  const sale = interpolate(frame, [dur - 6, dur], [0, 100], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: (x) => x * x });
+  const t = tinta(p.fondo);
+  const pop = (d: number) => spring({ frame: frame - d, fps, config: { damping: 14, stiffness: 160 } });
+  const n = p.contar
+    ? Math.round(p.contar[0] + (p.contar[1] - p.contar[0]) * interpolate(frame, [4, dur * 0.6], [0, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp", easing: ease }))
+    : null;
+  const kb = interpolate(frame, [0, dur], [1.08, 1]);
+  return (
+    <AbsoluteFill style={{ clipPath: `inset(${sale}% 0 ${entra}% 0)`, backgroundColor: brand.colors[p.fondo] }}>
+      <AbsoluteFill style={{ alignItems: "center", justifyContent: "center", padding: "250px 90px 350px", gap: 34 }}>
+        {p.imagen ? (
+          <div style={{ width: 680, height: 600, backgroundColor: brand.colors.claro, padding: 16, boxShadow: "0 24px 60px rgba(28,26,23,0.35)", transform: `rotate(-2.5deg) scale(${0.85 + 0.15 * pop(2)})`, opacity: pop(2) }}>
+            <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+              <Img src={staticFile(p.imagen)} style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: p.encuadre ?? "50% 50%", transform: `scale(${kb})` }} />
+            </div>
+          </div>
+        ) : null}
+        {p.arriba ? (
+          <div style={{ fontFamily: fuenteManuscrita, fontSize: 64, color: t.acento, transform: `rotate(-3deg) translateY(${(1 - pop(4)) * 30}px)`, opacity: pop(4), textAlign: "center" }}>{p.arriba}</div>
+        ) : null}
+        <div
+          style={{
+            fontFamily: fuenteTitulos,
+            fontWeight: 700,
+            fontSize: n !== null ? 280 : p.titulo.length > 14 ? 104 : 130,
+            letterSpacing: n !== null ? -8 : -2,
+            lineHeight: 1,
+            textAlign: "center",
+            color: t.titulo,
+            transform: `scale(${0.8 + 0.2 * pop(6)})`,
+            opacity: pop(6),
+          }}
+        >
+          {n !== null ? n : p.titulo}
+        </div>
+        <div style={{ width: 160 * pop(9), height: 4, backgroundColor: t.linea, opacity: 0.6 }} />
+        {p.abajo ? (
+          <div style={{ fontFamily: fuenteTitulos, fontWeight: 600, fontSize: 50, letterSpacing: 1, color: t.titulo, opacity: pop(10) * 0.9, textAlign: "center" }}>{p.abajo}</div>
+        ) : null}
+      </AbsoluteFill>
+    </AbsoluteFill>
+  );
+};
+
 const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
   const frame = useCurrentFrame();
   const dur = framesToma(t);
@@ -236,7 +312,8 @@ const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
   const cerca = saltos.filter((x) => frame >= x).length % 2 === 1;
   const z = lento * (cerca ? 1.28 : 1);
   const bn = t.bn && frame >= f(t.bn[0]) && frame < f(t.bn[1]);
-  const palabra = (t.palabras ?? []).find((p, i, arr) => frame >= f(p.a) && frame < f(arr[i + 1] ? Math.min(arr[i + 1].a, p.b + 0.6) : p.b + 0.4));
+  const enPantalla = (t.pantallas ?? []).some((p) => frame >= f(p.desde) && frame < f(p.hasta));
+  const palabra = enPantalla ? undefined : (t.palabras ?? []).find((p, i, arr) => frame >= f(p.a) && frame < f(arr[i + 1] ? Math.min(arr[i + 1].a, p.b + 0.6) : p.b + 0.4));
   return (
     <AbsoluteFill style={{ backgroundColor: brand.colors.carbon }}>
       <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `50% ${(t.cy ?? 0.4) * 100}%`, filter: bn ? "grayscale(1) contrast(1.1)" : undefined }}>
@@ -257,6 +334,11 @@ const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
       {(t.datos ?? []).map((d, i) => (
         <Sequence key={"d" + i} from={f(d.desde)} durationInFrames={Math.max(1, f(d.hasta - d.desde))} layout="none">
           <Dato d={d} />
+        </Sequence>
+      ))}
+      {(t.pantallas ?? []).map((p, i) => (
+        <Sequence key={"p" + i} from={f(p.desde)} durationInFrames={Math.max(1, f(p.hasta - p.desde))} layout="none">
+          <PantallaColor p={p} />
         </Sequence>
       ))}
       {t.contador ? (

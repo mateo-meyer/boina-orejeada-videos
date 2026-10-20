@@ -55,6 +55,8 @@ const tomaSchema = z.object({
   zoom: z.number().optional(),
   // Centro vertical del encuadre al hacer zoom (0–1).
   cy: z.number().optional(),
+  // Centro de la cara (0–1): los zooms van hacia ahí.
+  cx: z.number().optional(),
   subtitulos: z.array(subtituloSchema),
   datos: z.array(datoSchema).optional(),
   // Subtítulos palabra por palabra (si están, reemplazan a "subtitulos").
@@ -67,6 +69,8 @@ const tomaSchema = z.object({
   contador: z.object({ de: z.number(), a: z.number(), desde: z.number(), hasta: z.number(), bajada: z.string().optional() }).optional(),
   // Pantallas de color a pantalla completa (la voz sigue sonando debajo).
   pantallas: z.array(pantallaSchema).optional(),
+  // Altura de los subtítulos (px desde arriba) si en esta toma la cara queda abajo.
+  subY: z.number().optional(),
 });
 
 export const capituloSchema = z.object({
@@ -201,12 +205,12 @@ export const Dato: React.FC<{ d: z.infer<typeof datoSchema> }> = ({ d }) => {
 // Palabra actual, grande y al pecho. Las fuertes van en cursiva serif.
 // Palabra actual en etiqueta de color, como los textos del teaser RAÍCES
 // (fuerte: azul con letra clara; clave: crema con letra azul, más grande).
-const PalabraViva: React.FC<{ w: string; fuerte: boolean }> = ({ w, fuerte }) => {
+const PalabraViva: React.FC<{ w: string; fuerte: boolean; y?: number }> = ({ w, fuerte, y = 1440 }) => {
   const frame = useCurrentFrame();
   const entrada = interpolate(frame, [0, 4], [0.85, 1], { extrapolateLeft: "clamp", extrapolateRight: "clamp" });
   const fontSize = fuerte ? 96 : 78;
   return (
-    <div style={{ position: "absolute", top: 1440, width: "100%", textAlign: "center" }}>
+    <div style={{ position: "absolute", top: y, width: "100%", textAlign: "center" }}>
       <span
         style={{
           display: "inline-block",
@@ -316,7 +320,7 @@ const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
   const palabra = enPantalla ? undefined : (t.palabras ?? []).find((p, i, arr) => frame >= f(p.a) && frame < f(arr[i + 1] ? Math.min(arr[i + 1].a, p.b + 0.6) : p.b + 0.4));
   return (
     <AbsoluteFill style={{ backgroundColor: brand.colors.carbon }}>
-      <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `50% ${(t.cy ?? 0.4) * 100}%`, filter: bn ? "grayscale(1) contrast(1.1)" : undefined }}>
+      <AbsoluteFill style={{ transform: `scale(${z})`, transformOrigin: `${(t.cx ?? 0.5) * 100}% ${(t.cy ?? 0.4) * 100}%`, filter: bn ? "grayscale(1) contrast(1.1)" : undefined }}>
         <OffthreadVideo src={staticFile(t.archivo)} trimBefore={f(t.inicio)} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
       </AbsoluteFill>
       {rotulo ? (
@@ -325,7 +329,7 @@ const TomaVideo: React.FC<{ t: Toma; rotulo?: string }> = ({ t, rotulo }) => {
         </div>
       ) : null}
       {t.palabras
-        ? palabra ? <Sequence from={f(palabra.a)} layout="none" key={palabra.a}><PalabraViva w={palabra.w} fuerte={!!palabra.fuerte} /></Sequence> : null
+        ? palabra ? <Sequence from={f(palabra.a)} layout="none" key={palabra.a}><PalabraViva w={palabra.w} fuerte={!!palabra.fuerte} y={t.subY} /></Sequence> : null
         : t.subtitulos.map((s, i) => (
             <Sequence key={i} from={f(s.desde)} durationInFrames={Math.max(1, f(s.hasta - s.desde))} layout="none">
               <Subtitulo s={s} />

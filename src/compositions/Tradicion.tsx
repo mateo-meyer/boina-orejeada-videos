@@ -223,7 +223,7 @@ const TomaVideo: React.FC<{ t: Toma; dur: number; entrada?: Toma["salida"]; filt
   }
 
   const tr = estiloTransicion(frame, dur, entrada, ultima ? undefined : t.salida);
-  const vol = interpolate(frame, [0, 4, finVideo - 6, finVideo], [0, 0.89, 0.89, 0], cl);
+  const vol = interpolate(frame, [0, 4, finVideo - 6, finVideo], [0, 1, 1, 0], cl);
 
   // Frase activa.
   const fr = t.frases.findIndex((ph, i) => {

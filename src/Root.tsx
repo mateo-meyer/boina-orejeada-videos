@@ -1,5 +1,6 @@
 import { Composition, Still } from "remotion";
 import { Portada, portadaSchema } from "./compositions/Portada";
+import { Tradicion, calculateTradicionMetadata, tradicionSchema } from "./compositions/Tradicion";
 import { Capitulo, CierreSolo, PlacaSola, TarjetaDato, calculateCapituloMetadata, capituloSchema, tarjetaSchema } from "./compositions/Capitulo";
 import { ReelPromo, reelPromoSchema } from "./compositions/ReelPromo";
 import {
@@ -75,6 +76,17 @@ export const RemotionRoot: React.FC = () => {
         durationInFrames={300}
         calculateMetadata={calculateCapituloMetadata}
         defaultProps={{ serie: "RAÍCES", capitulo: "Capítulo 1", titulo: "Balderrama", placaDespuesDe: 0, duracionPlaca: 1.5, tomas: [], pregunta: "", duracionCierre: 2.5 }}
+      />
+      <Composition
+        id="Tradicion"
+        component={Tradicion}
+        schema={tradicionSchema}
+        fps={30}
+        width={1080}
+        height={1920}
+        durationInFrames={300}
+        calculateMetadata={calculateTradicionMetadata}
+        defaultProps={{ tomas: [], cierreTitulo: "", cierreBajada: "", duracionCierre: 2, filtro: "" }}
       />
       <Composition id="TarjetaDato" component={TarjetaDato} schema={tarjetaSchema} fps={30} width={1080} height={1920} durationInFrames={90} defaultProps={{ titulo: "1953", bajada: "Salta" }} />
       <Composition id="PlacaCapitulo" component={PlacaSola} fps={30} width={1080} height={1920} durationInFrames={45} defaultProps={{ serie: "RAÍCES", capitulo: "Capítulo 1", titulo: "Balderrama" }} />

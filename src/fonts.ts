@@ -27,3 +27,12 @@ loadFont({
   url: staticFile("fonts/NothingYouCouldDo.ttf"),
   weight: "400",
 });
+
+// Prompt maestro de edición: Playfair Display (títulos y palabras destacadas) + Inter (subtítulos).
+export const fuentePlayfair = "Playfair Display";
+export const fuenteInter = "Inter";
+
+loadFont({ family: fuentePlayfair, url: staticFile("fonts/PlayfairDisplay-Bold.ttf"), weight: "700" });
+loadFont({ family: fuentePlayfair, url: staticFile("fonts/PlayfairDisplay-SemiBoldItalic.ttf"), style: "italic", weight: "700" });
+loadFont({ family: fuenteInter, url: staticFile("fonts/Inter-SemiBold.otf"), weight: "600" });
+loadFont({ family: fuenteInter, url: staticFile("fonts/Inter-Bold.otf"), weight: "700" });

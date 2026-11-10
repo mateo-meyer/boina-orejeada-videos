@@ -1,0 +1,9 @@
+@font-face{font-family:PF;src:url(PlayfairDisplay-Bold.ttf);font-weight:700}
+@font-face{font-family:PF;src:url(PlayfairDisplay-SemiBoldItalic.ttf);font-style:italic;font-weight:700}
+@font-face{font-family:IN;src:url(Inter-Bold.otf);font-weight:700}
+@font-face{font-family:IN;src:url(Inter-SemiBold.otf);font-weight:600}
+*{margin:0;box-sizing:border-box}
+body{width:1080px;height:1920px;overflow:hidden;position:relative;font-family:IN}
+.abs{position:absolute}
+.tag{position:absolute;font-weight:700;box-shadow:0 10px 22px rgba(0,0,0,.4);border-radius:14px}
+.st{position:absolute;filter:drop-shadow(0 24px 28px rgba(0,0,0,.55))}
